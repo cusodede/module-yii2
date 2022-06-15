@@ -89,6 +89,13 @@ class Yii2 extends Client
      */
     public $applicationClass = null;
 
+    /**
+     * @var bool By default, app created with simple debug logger (@see \Codeception\Lib\Connector\Yii2\Logger), and all log
+     * targets are disabled, to speed up test execution. This option allows to enable configured/default log component and
+     * all logging targets (for example, to test them).
+     */
+    public $disableLogger = true;
+
 
     private $emails = [];
 
@@ -297,7 +304,9 @@ class Yii2 extends Client
         $config = $this->mockMailer($config);
         /** @var \yii\base\Application $app */
         Yii::$app = Yii::createObject($config);
-        Yii::setLogger(new Logger());
+        if ($this->disableLogger) {
+            Yii::setLogger(new Logger());
+        }
     }
 
     /**
@@ -339,10 +348,13 @@ class Yii2 extends Client
 
         $app = $this->getApplication();
 
-        // disabling logging. Logs are slowing test execution down
-        foreach ($app->log->targets as $target) {
-            $target->enabled = false;
+        if ($this->disableLogger) {
+            // disabling logging. Logs are slowing test execution down
+            foreach ($app->log->targets as $target) {
+                $target->enabled = false;
+            }
         }
+
 
 
 

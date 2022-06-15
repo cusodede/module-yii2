@@ -79,6 +79,9 @@ use yii\db\Transaction;
  *   changes will get discarded.
  * * `recreateApplication` - (default: `false`) whether to recreate the whole
  *   application before each request
+ * * `disableLogger` - (default: `true`) whether to disable default or configured
+ *   loggers, and replace it to \Codeception\Lib\Connector\Yii2\Logger to speed up
+ *   test execution. Set to `false` if required to test logger components directly.
  *
  * You can use this module by setting params in your `functional.suite.yml`:
  *
@@ -119,6 +122,7 @@ use yii\db\Transaction;
  *             transaction: false # don't wrap test in transaction
  *             cleanup: false # don't cleanup the fixtures
  *             entryScript: index-test.php
+ *             disableLogger: false # don't disable standard loggers
  * ```
  *
  * ## Fixtures
@@ -184,6 +188,7 @@ class Yii2 extends Framework implements ActiveRecord, MultiSession, PartedModule
         'recreateApplication' => false,
         'closeSessionOnRecreateApplication' => true,
         'applicationClass' => null,
+        'disableLogger' => true
     ];
 
     protected $requiredFields = ['configFile'];
