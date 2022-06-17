@@ -126,7 +126,9 @@ class Yii2 extends Client
         if (method_exists(\yii\base\Event::className(), 'offAll')) {
             \yii\base\Event::offAll();
         }
-        Yii::setLogger(null);
+        if ($this->disableLogger) {
+            Yii::setLogger(null);
+        }
         // This resolves an issue with database connections not closing properly.
         gc_collect_cycles();
     }
